@@ -2,10 +2,11 @@ const userService = require('../services/UserSevice')
 
 exports.show = async (req, res) => {
    try {
-      const users = await userService.show()
+      const data = await userService.show()
       res.status(200).json({
-         message: 'Berhasil mengambil Users',
-         data: users,
+         status: data.status,
+         message: data.message,
+         data: data.users,
       })
    } catch (error) {
       res.status(500).json({ error: error.message })
@@ -18,12 +19,69 @@ exports.create = async (req, res) => {
       if (result.error) {
          res.status(400).json({ error: result.error })
       } else if (result.usernameExist) {
-         res.status(400).json({ message: 'Username already exists!' })
+         res.status(400).json({
+            status: 'fail',
+            message: 'Username already exists!',
+         })
       } else {
          res.status(201).json({
-            message: `Creating user with name ${result.user.username} success!`,
+            status: result.status,
+            message: result.message,
          })
       }
+   } catch (error) {
+      res.status(500).json({ error: error.message })
+   }
+}
+
+exports.getById = async (req, res) => {
+   try {
+      const data = await userService.getById(req.params)
+      if (data.status === 'fail') {
+         return res.json({
+            status: data.status,
+            message: data.message,
+         })
+      } else {
+         return res.json({
+            status: data.status,
+            message: data.message,
+            data: data.user,
+         })
+      }
+   } catch (error) {
+      res.status(500).json({ error: error.message })
+   }
+}
+
+exports.updateById = async (req, res) => {
+   try {
+      const result = await userService.updateById(req.params.id, req.body)
+      if (result.error) {
+         res.status(400).json({ error: result.error })
+      } else if (result.usernameExist) {
+         res.status(400).json({
+            status: 'fail',
+            message: 'Username already exists!',
+         })
+      } else {
+         res.status(201).json({
+            status: result.status,
+            message: result.message,
+         })
+      }
+   } catch (error) {
+      res.status(500).json({ error: error.message })
+   }
+}
+
+exports.destroy = async (req, res) => {
+   try {
+      const data = await userService.destroy(req.params)
+      return res.json({
+         status: data.status,
+         message: data.message,
+      })
    } catch (error) {
       res.status(500).json({ error: error.message })
    }
