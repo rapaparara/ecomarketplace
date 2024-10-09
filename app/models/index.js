@@ -8,6 +8,14 @@ const Transaction = require('./TransactionModel')
 const User = require('./UserModel')
 const Wishlist = require('./WishlistModel')
 
+// Relasi
+User.hasMany(Product,{foreignKey:'seller_id'})
+Product.belongsTo(User,{foreignKey:'seller_id'})
+
+Category.hasMany(Product,{foreignKey:'category_id'})
+Product.belongsTo(Category,{foreignKey:'category_id'})
+
+
 // Inisialisasi semua model
 const db = {}
 db.Sequelize = sequelize
