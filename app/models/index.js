@@ -1,9 +1,12 @@
 const sequelize = require('../config/database')
+const CartItem = require('./CartItemModel')
 const Cart = require('./CartModel')
 const Category = require('./CategoryModel')
 const Product = require('./ProductModel')
 const ProductReview = require('./ProductReviewModel')
+const Transaction = require('./TransactionModel')
 const User = require('./UserModel')
+const Wishlist = require('./WishlistModel')
 
 // Inisialisasi semua model
 const db = {}
@@ -13,6 +16,9 @@ db.Category = Category
 db.Product = Product
 db.ProductReview = ProductReview
 db.Cart = Cart
+db.CartItem = CartItem
+db.Transaction = Transaction
+db.Wishlist = Wishlist
 
 // Sinkronisasi model dengan database
 db.Sequelize.sync({ force: false }).then(() => {
