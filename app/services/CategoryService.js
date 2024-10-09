@@ -6,7 +6,7 @@ exports.show = async () => {
    try {
       const categories = await Category.findAll()
       return {
-         status: 'ok',
+         status: true,
          message: 'Berhasil mengambil Categories',
          categories: categories,
       }
@@ -31,7 +31,7 @@ exports.create = async (data) => {
       const { error } = schema.validate(data)
       if (error) {
          return {
-            status: 'fail',
+            status: false,
             message: error.details[0].message,
          }
       }
@@ -47,7 +47,7 @@ exports.create = async (data) => {
       })
 
       return {
-         status: 'ok',
+         status: true,
          message: `Berhasil membuat kategori dengan nama : ${category.name}`,
          data: category,
       }
@@ -61,11 +61,11 @@ exports.getById = async (data) => {
       const category = await Category.findByPk(data.id)
       if (category)
          return {
-            status: 'ok',
+            status: true,
             message: 'Berhasil mengambil Kategori',
             category: category,
          }
-      else return { status: 'fail', message: 'Kategori tidak ditemukan!' }
+      else return { status: false, message: 'Kategori tidak ditemukan!' }
    } catch (error) {
       throw new Error(error.message)
    }
@@ -75,7 +75,7 @@ exports.updateById = async (id, data) => {
    try {
       const category = await Category.findByPk(id)
       if (!category)
-         return { status: 'fail', message: 'Kategori tidak ditemukan!' }
+         return { status: false, message: 'Kategori tidak ditemukan!' }
       const schema = Joi.object({
          name: Joi.string().min(5).max(30).messages({
             'string.min': 'Nama kategori minimal 5 karakter',
@@ -90,13 +90,13 @@ exports.updateById = async (id, data) => {
       const { error } = schema.validate(data)
       if (error) {
          return {
-            status: 'fail',
+            status: false,
             message: error.details[0].message,
          }
       }
       if (await category.update(data)) {
          return {
-            status: 'ok',
+            status: true,
             message: 'Berhasil mengupdate data',
          }
       }
@@ -110,8 +110,8 @@ exports.destroy = async (data) => {
       const category = await Category.findByPk(data.id)
       if (category) {
          await category.destroy()
-         return { status: 'ok', message: 'Kategori berhasil dihapus' }
-      } else return { status: 'fail', message: 'Kategori tidak ditemukan!' }
+         return { status: true, message: 'Kategori berhasil dihapus' }
+      } else return { status: false, message: 'Kategori tidak ditemukan!' }
    } catch (error) {
       throw new Error(error.message)
    }

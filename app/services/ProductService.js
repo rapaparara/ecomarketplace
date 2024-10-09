@@ -22,7 +22,7 @@ exports.show = async () => {
          attributes: { exclude: ['seller_id', 'category_id'] },
       })
       return {
-         status: 'ok',
+         status: true,
          message: 'Berhasil mengambil Produk',
          products: products,
       }
@@ -63,7 +63,7 @@ exports.create = async (data) => {
       const { error } = schema.validate(data)
       if (error) {
          return {
-            status: 'fail',
+            status: false,
             message: error.details[0].message,
          }
       }
@@ -93,7 +93,7 @@ exports.create = async (data) => {
       })
 
       return {
-         status: 'ok',
+         status: true,
          message: `Berhasil membuat Produk dengan nama : ${product.name}`,
          data: product,
       }
@@ -107,11 +107,11 @@ exports.getById = async (data) => {
       const product = await Product.findByPk(data.id)
       if (product)
          return {
-            status: 'ok',
+            status: true,
             message: 'Berhasil mengambil Product',
             product: product,
          }
-      else return { status: 'fail', message: 'Produk tidak ditemukan!' }
+      else return { status: false, message: 'Produk tidak ditemukan!' }
    } catch (error) {
       throw new Error(error.message)
    }
@@ -120,8 +120,7 @@ exports.getById = async (data) => {
 exports.updateById = async (id, data) => {
    try {
       const product = await Product.findByPk(id)
-      if (!product)
-         return { status: 'fail', message: 'Produk tidak ditemukan!' }
+      if (!product) return { status: false, message: 'Produk tidak ditemukan!' }
       const schema = Joi.object({
          seller_id: Joi.string().min(5).messages({
             'string.min': 'Id user harus benar',
@@ -152,7 +151,7 @@ exports.updateById = async (id, data) => {
       const { error } = schema.validate(data)
       if (error) {
          return {
-            status: 'fail',
+            status: false,
             message: error.details[0].message,
          }
       }
@@ -172,7 +171,7 @@ exports.updateById = async (id, data) => {
 
       if (await product.update(data)) {
          return {
-            status: 'ok',
+            status: true,
             message: 'Berhasil mengupdate data',
          }
       }
@@ -186,8 +185,8 @@ exports.destroy = async (data) => {
       const product = await Product.findByPk(data.id)
       if (product) {
          await product.destroy()
-         return { status: 'ok', message: 'Produk berhasil dihapus' }
-      } else return { status: 'fail', message: 'Produk tidak ditemukan!' }
+         return { status: true, message: 'Produk berhasil dihapus' }
+      } else return { status: false, message: 'Produk tidak ditemukan!' }
    } catch (error) {
       throw new Error(error.message)
    }

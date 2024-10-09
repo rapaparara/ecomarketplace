@@ -20,12 +20,12 @@ exports.create = async (req, res) => {
          res.status(400).json({ error: result.error })
       } else if (result.userNotFound) {
          res.status(400).json({
-            status: 'fail',
+            status: false,
             message: 'User tidak ditemukan!',
          })
       } else if (result.categoryNotFound) {
          res.status(400).json({
-            status: 'fail',
+            status: false,
             message: 'Kategori tidak ditemukan!',
          })
       } else {
@@ -42,7 +42,7 @@ exports.create = async (req, res) => {
 exports.getById = async (req, res) => {
    try {
       const data = await ProductService.getById(req.params)
-      if (data.status === 'fail') {
+      if (!data.status) {
          return res.json({
             status: data.status,
             message: data.message,

@@ -7,7 +7,7 @@ exports.show = async () => {
    try {
       const users = await User.findAll()
       return {
-         status: 'ok',
+         status: true,
          message: 'Berhasil mengambil Users',
          users: users,
       }
@@ -40,7 +40,7 @@ exports.create = async (data) => {
       const { error } = schema.validate(data)
       if (error) {
          return {
-            status: 'fail',
+            status: false,
             message: error.details[0].message,
          }
       }
@@ -64,7 +64,7 @@ exports.create = async (data) => {
       })
 
       return {
-         status: 'ok',
+         status: true,
          message: `Berhasil membuat user dengan username : ${user.username}`,
          data: user,
       }
@@ -77,8 +77,8 @@ exports.getById = async (data) => {
    try {
       const user = await User.findByPk(data.id)
       if (user)
-         return { status: 'ok', message: 'Berhasil mengambil user', user: user }
-      else return { status: 'fail', message: 'User tidak ditemukan!' }
+         return { status: true, message: 'Berhasil mengambil user', user: user }
+      else return { status: false, message: 'User tidak ditemukan!' }
    } catch (error) {
       throw new Error(error.message)
    }
@@ -87,7 +87,7 @@ exports.getById = async (data) => {
 exports.updateById = async (id, data) => {
    try {
       const user = await User.findByPk(id)
-      if (!user) return { status: 'fail', message: 'User tidak ditemukan!' }
+      if (!user) return { status: false, message: 'User tidak ditemukan!' }
       const usernameExist = await User.findOne({
          where: { username: data.username },
       })
@@ -112,14 +112,14 @@ exports.updateById = async (id, data) => {
       const { error } = schema.validate(data)
       if (error) {
          return {
-            status: 'fail',
+            status: false,
             message: error.details[0].message,
          }
       }
       if (data.password) data.password = await bcryptjs.hash(data.password, 12)
       if (await user.update(data)) {
          return {
-            status: 'ok',
+            status: true,
             message: 'Berhasil mengupdate data',
          }
       }
@@ -133,8 +133,8 @@ exports.destroy = async (data) => {
       const user = await User.findByPk(data.id)
       if (user) {
          await user.destroy()
-         return { status: 'ok', message: 'User berhasil dihapus' }
-      } else return { status: 'fail', message: 'User tidak ditemukan!' }
+         return { status: true, message: 'User berhasil dihapus' }
+      } else return { status: false, message: 'User tidak ditemukan!' }
    } catch (error) {
       throw new Error(error.message)
    }

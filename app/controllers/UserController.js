@@ -20,7 +20,7 @@ exports.create = async (req, res) => {
          res.status(400).json({ error: result.error })
       } else if (result.usernameExist) {
          res.status(400).json({
-            status: 'fail',
+            status: false,
             message: 'Username already exists!',
          })
       } else {
@@ -37,7 +37,7 @@ exports.create = async (req, res) => {
 exports.getById = async (req, res) => {
    try {
       const data = await userService.getById(req.params)
-      if (data.status === 'fail') {
+      if (!data.status) {
          return res.json({
             status: data.status,
             message: data.message,
@@ -61,7 +61,7 @@ exports.updateById = async (req, res) => {
          res.status(400).json({ error: result.error })
       } else if (result.usernameExist) {
          res.status(400).json({
-            status: 'fail',
+            status: false,
             message: 'Username already exists!',
          })
       } else {

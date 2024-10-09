@@ -32,7 +32,7 @@ exports.create = async (req, res) => {
 exports.getById = async (req, res) => {
    try {
       const data = await CategoryService.getById(req.params)
-      if (data.status === 'fail') {
+      if (!data.status) {
          return res.json({
             status: data.status,
             message: data.message,
