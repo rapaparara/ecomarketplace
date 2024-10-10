@@ -1,12 +1,12 @@
-const ProductService = require('../services/ProductService')
+const ProductReviewService = require('../services/ProductReviewService')
 
 exports.show = async (req, res) => {
    try {
-      const data = await ProductService.show()
+      const data = await ProductReviewService.show()
       res.status(200).json({
          status: data.status,
          message: data.message,
-         data: data.products,
+         data: data.product_reviews,
       })
    } catch (error) {
       res.status(500).json({ error: error.message })
@@ -15,7 +15,7 @@ exports.show = async (req, res) => {
 
 exports.create = async (req, res) => {
    try {
-      const result = await ProductService.create(req.body)
+      const result = await ProductReviewService.create(req.body)
       if (result.error) {
          res.status(400).json({ error: result.error })
       } else if (result.userNotFound) {
@@ -23,10 +23,10 @@ exports.create = async (req, res) => {
             status: false,
             message: 'User tidak ditemukan!',
          })
-      } else if (result.categoryNotFound) {
+      } else if (result.productNotFound) {
          res.status(400).json({
             status: false,
-            message: 'Kategori tidak ditemukan!',
+            message: 'Produk tidak ditemukan!',
          })
       } else {
          res.status(201).json({
@@ -41,7 +41,7 @@ exports.create = async (req, res) => {
 
 exports.getById = async (req, res) => {
    try {
-      const data = await ProductService.getById(req.params)
+      const data = await ProductReviewService.getById(req.params)
       if (!data.status) {
          return res.json({
             status: data.status,
@@ -51,7 +51,7 @@ exports.getById = async (req, res) => {
          return res.json({
             status: data.status,
             message: data.message,
-            data: data.product,
+            data: data.product_review,
          })
       }
    } catch (error) {
@@ -61,7 +61,11 @@ exports.getById = async (req, res) => {
 
 exports.updateById = async (req, res) => {
    try {
-      const result = await ProductService.updateById(req.params.id, req.body)
+      const result = await ProductReviewService.updateById(
+         req.params.id,
+         req.body
+      )
+      console.log(result)
       if (result.error) {
          res.status(400).json({ error: result.error })
       } else if (result.userNotFound) {
@@ -69,10 +73,10 @@ exports.updateById = async (req, res) => {
             status: false,
             message: 'User tidak dtemukan!',
          })
-      } else if (result.categoryNotFound) {
+      } else if (result.productNotFound) {
          res.status(400).json({
             status: false,
-            message: 'Kategori tidak ditemukan!',
+            message: 'Produk tidak ditemukan!',
          })
       } else {
          res.status(201).json({
@@ -87,7 +91,7 @@ exports.updateById = async (req, res) => {
 
 exports.destroy = async (req, res) => {
    try {
-      const data = await ProductService.destroy(req.params)
+      const data = await ProductReviewService.destroy(req.params)
       return res.json({
          status: data.status,
          message: data.message,

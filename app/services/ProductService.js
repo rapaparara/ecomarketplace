@@ -104,7 +104,22 @@ exports.create = async (data) => {
 
 exports.getById = async (data) => {
    try {
-      const product = await Product.findByPk(data.id)
+      const product = await Product.findOne({
+         include: [
+            {
+               model: User,
+               attributes: {
+                  exclude: ['password', 'role', 'createdAt', 'updatedAt'],
+               },
+            },
+            {
+               model: Category,
+               attributes: { exclude: ['createdAt', 'updatedAt'] },
+            },
+         ],
+         attributes: { exclude: ['seller_id', 'category_id'] },
+         where: { id: data.id },
+      })
       if (product)
          return {
             status: true,

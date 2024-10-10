@@ -15,6 +15,11 @@ Product.belongsTo(User,{foreignKey:'seller_id'})
 Category.hasMany(Product,{foreignKey:'category_id'})
 Product.belongsTo(Category,{foreignKey:'category_id'})
 
+User.hasMany(ProductReview, { foreignKey: 'buyer_id' })
+ProductReview.belongsTo(User, { foreignKey: 'buyer_id' })
+
+Product.hasMany(ProductReview, { foreignKey: 'product_id' })
+ProductReview.belongsTo(Product, { foreignKey: 'product_id' })
 
 // Inisialisasi semua model
 const db = {}
