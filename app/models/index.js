@@ -21,6 +21,9 @@ ProductReview.belongsTo(User, { foreignKey: 'buyer_id' })
 Product.hasMany(ProductReview, { foreignKey: 'product_id' })
 ProductReview.belongsTo(Product, { foreignKey: 'product_id' })
 
+User.hasMany(Cart, { foreignKey: 'buyer_id' })
+Cart.belongsTo(User, { foreignKey: 'buyer_id' })
+
 // Inisialisasi semua model
 const db = {}
 db.Sequelize = sequelize
@@ -32,10 +35,5 @@ db.Cart = Cart
 db.CartItem = CartItem
 db.Transaction = Transaction
 db.Wishlist = Wishlist
-
-// Sinkronisasi model dengan database
-db.Sequelize.sync({ force: false }).then(() => {
-   console.log('Database & tables created!')
-})
 
 module.exports = db

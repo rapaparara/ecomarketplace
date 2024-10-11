@@ -18,7 +18,7 @@ const Cart = sequelize.define(
          onDelete: 'SET NULL',
       },
       total_price: {
-         type: DataTypes.DECIMAL(10, 2),
+         type: DataTypes.INTEGER,
          allowNull: false,
       },
       status: {
