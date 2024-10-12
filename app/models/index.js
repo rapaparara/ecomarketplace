@@ -24,6 +24,12 @@ ProductReview.belongsTo(Product, { foreignKey: 'product_id' })
 User.hasMany(Cart, { foreignKey: 'buyer_id' })
 Cart.belongsTo(User, { foreignKey: 'buyer_id' })
 
+Cart.hasMany(CartItem, { foreignKey: 'cart_id' })
+CartItem.belongsTo(Cart, { foreignKey: 'cart_id' })
+
+Product.hasMany(CartItem, { foreignKey: 'product_id' })
+CartItem.belongsTo(Product, { foreignKey: 'product_id' })
+
 // Inisialisasi semua model
 const db = {}
 db.Sequelize = sequelize

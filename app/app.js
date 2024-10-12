@@ -6,6 +6,7 @@ const CategoryRoutes = require('./routes/CategoryRoutes')
 const ProductRoutes = require('./routes/ProductRoutes')
 const ProductReviewRoutes = require('./routes/ProductReviewRoutes')
 const CartRoutes = require('./routes/CartRoutes')
+const CartItemRoutes = require('./routes/CartItemRoutes')
 
 app.use(express.json())
 app.use('/index', indexRoutes)
@@ -14,5 +15,6 @@ app.use('/categories', CategoryRoutes)
 app.use('/products', ProductRoutes)
 app.use('/product-reviews', ProductReviewRoutes)
 app.use('/carts', CartRoutes)
+app.use('/cart-items', CartItemRoutes)
 
 module.exports = app
