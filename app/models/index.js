@@ -30,6 +30,9 @@ CartItem.belongsTo(Cart, { foreignKey: 'cart_id' })
 Product.hasMany(CartItem, { foreignKey: 'product_id' })
 CartItem.belongsTo(Product, { foreignKey: 'product_id' })
 
+Transaction.belongsTo(Cart, { foreignKey: 'cart_id' })
+Cart.hasMany(Transaction, { foreignKey: 'cart_id' })
+
 // Inisialisasi semua model
 const db = {}
 db.Sequelize = sequelize
